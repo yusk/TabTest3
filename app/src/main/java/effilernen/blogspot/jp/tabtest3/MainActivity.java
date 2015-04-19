@@ -63,8 +63,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter{
-        MyFragment myFragment;
-        String[] tabs;;
+
+        String[] tabs;
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -73,20 +73,19 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int position) {
+            MyFragment myFragment = null;
+
             switch (position){
                 case 0:
                     myFragment = MyFragment.getInstance(position);
                     break;
                 case 1:
-                     myFragment = MyFragment.getInstance(position);
+                    myFragment =  MyFragment2.getInstance(position);
                     break;
-                case 2:
-                    myFragment = MyFragment.getInstance(position);
-                    break;
-
             }
-            MyFragment myFragment = MyFragment.getInstance(position);
-            return null;
+
+
+            return myFragment;
         }
 
         @Override
@@ -103,18 +102,49 @@ public class MainActivity extends ActionBarActivity {
     public static class MyFragment extends Fragment{
         private TextView textView;
 
-//        public static MyFragment getInstance(int position){
-//            MyFragment myFragment = new MyFragment();
-//            Bundle args = new Bundle();
-//            args.putInt("position", position);
-//            myFragment.setArguments(args);
-//            return myFragment;
-//        }
+        public static MyFragment getInstance(int position){
+            MyFragment myFragment = new MyFragment();
+            Bundle args = new Bundle();
+            args.putInt("position", position);
+            myFragment.setArguments(args);
+            return myFragment;
+        }
+
+
 
 
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View layout = inflater.inflate(R.layout.fragment_my, container, false);
+            return layout;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            textView = (TextView) view.findViewById(R.id.position);
+            Bundle bundle = getArguments();
+            if (bundle!=null){
+                textView.setText("The Page Selected is" + bundle.getInt("position"));
+            }
+        }
+    }
+
+    public static class MyFragment2 extends Fragment{
+        private TextView textView;
+
+        public static MyFragment getInstance(int position){
+            MyFragment myFragment = new MyFragment();
+            Bundle args = new Bundle();
+            args.putInt("position", position);
+            myFragment.setArguments(args);
+            return myFragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View layout = inflater.inflate(R.layout.fragment_my2, container, false);
             return layout;
         }
 
